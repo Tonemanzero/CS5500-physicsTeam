@@ -1,78 +1,94 @@
-#include "world.h"
-#include "object.h"
+#include "World.h"
+#include "Object.h"
 #include <vector>
 #include <algorithm>
-coordinate::coordinate()
-{
-    x=0,y=0,z=0;
-}
-coordinate::coordinate(int ax, int ay, int az)
+Coordinate::Coordinate(int ax=0, int ay=0, int az=0)
 {
     x=ax,y=ay,z=az;
 }
-coordinate coordinate::operator+(const coordinate right)
+Coordinate & Coordinate::operator+=(const Coordinate & right)
 {
-    coordinate temp;
-    temp.x= this->x + right.x;
-    temp.y= this->y + right.y;
-    temp.z= this->z + right.z;
+	this->x += right.x;
+	this->y += right.y;
+	this->z += right.z;
+	return *this;
+}
+const Coordinate Coordinate::operator+(const Coordinate & right) const
+{
+    Coordinate temp = *this;
+	temp+=right;
+    return temp;
+}
+Coordinate & Coordinate::operator-=(const Coordinate & right)
+{
+	this->x -= right.x;
+	this->y -= right.y;
+	this->z -= right.z;
+	return *this;
+}
+const Coordinate Coordinate::operator-(const Coordinate & right) const
+{
+    Coordinate temp = *this;
+	temp-=right;
     return temp;
 }
 //z is up and down
 //add paralell fill
-world::world(templateObjectList temp, int tempX=1,int tempY=1, int tempZ=1)
+World::World(int tempX=1,int tempY=1, int tempZ=1)
 {
     sizeX=tempX;
     sizeY=tempY;
     sizeZ=tempZ;
-    std::vector<object> list;
+    std::vector<Object> list;
     list.resize(tempZ);
-    std::vector<std::vector<object>> listOList;
+    std::vector<std::vector<Object>> listOList;
     listOList.resize(tempY);
-    std::vector<std::vector<std::vector<object>>> listOListOList;
+    std::vector<std::vector<std::vector<Object>>> listOListOList;
     listOListOList.resize(tempX);
-    std::fill(list.begin(),list.end(), temp.getTemplate(0));
+    //std::fill(list.begin(),list.end(), temp.getTemplate(0));
     std::fill(listOList.begin(),listOList.end(), list);
     std::fill(listOListOList.begin(),listOListOList.end(), listOList);
     map=listOListOList;
 }
- object world::getObject(coordinate temp)
+
+//If out of bounds the object returned with have an id==-1
+Object World::getObject(Coordinate position, Coordinate offset = Coordinate(0,0,0)) const
  {
-     while(temp.x>sizeX)
-         temp.x-=sizeX;
-     while(temp.x<0)
-         temp.x+=sizeX;
-     
-     while(temp.y>sizeY)
-         temp.y-=sizeY;
-     while(temp.y<0)
-         temp.y+=sizeY;
+     position += offset;
 
-     while(temp.z>sizeZ)
-         temp.z-=sizeZ;
-     while(temp.z<0)
-         temp.z+=sizeZ;
+	 //Wrapping X, Y
+	 position.x = (position.x % sizeX);
+	 position.y = (position.y % sizeY);
+	 //Out of bounds Z
+	 if(position.z >= sizeZ || position.z < 0)
+	 {
+		 return Object();
+	 }
 
-     return map[temp.x][temp.y][temp.z];
+     return map[position.x][position.y][position.z];
  }
 
- object world::getObject(coordinate temp, coordinate temp2)
+ Object World::getObject(int posX, int posY, int posZ, int offX=0, int offY=0, int offZ=0) const
  {
-     temp = temp + temp2;
-     while(temp.x>sizeX)
-         temp.x-=sizeX;
-     while(temp.x<0)
-         temp.x+=sizeX;
-     
-     while(temp.y>sizeY)
-         temp.y-=sizeY;
-     while(temp.y<0)
-         temp.y+=sizeY;
+	 return getObject(Coordinate(posX, posY, posZ), Coordinate(offX, offY, offZ));
+ }
 
-     while(temp.z>sizeZ)
-         temp.z-=sizeZ;
-     while(temp.z<0)
-         temp.z+=sizeZ;
+ int World::getSizeX() const
+ {
+	 return sizeX;
+ }
 
-     return map[temp.x][temp.y][temp.z];
+ int World::getSizeY() const
+ {
+	 return sizeY;
+ }
+
+ int World::getSizeZ() const
+ {
+	 return sizeZ;
+ }
+
+ Coordinate World::getSize() const
+ {
+	 return Coordinate(sizeX, sizeY, sizeZ);
  }

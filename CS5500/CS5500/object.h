@@ -1,56 +1,65 @@
-#ifndef object_h
-#define object_h
+#ifndef Object_h
+#define Object_h
 #include <string>
 #include <vector>
+#include <mutex>
 
-//the base object
+using namespace std;
+
+//the base Object
 //once set, cannot be changed
-class templateObject
+//thread safe
+class TemplateObject
 {
 public:
-    templateObject(std::string,int,int,int,int,bool,bool);
-    std::string getName();
-    int getId();
-    int getHp();
-    int getStrength();
-    int getWeight();
-    bool getIsFlamable();
-    bool getIsWetable();
-    
+    TemplateObject(std::string,int,int,int,bool,bool);
+    std::string getName() const;
+    int getHp() const;
+    int getStrength() const;
+    int getWeight() const;
+    bool getIsFlamable() const;
+    bool getIsWetable() const;
 private:
-    int id, baseHp, strength, weight;
+    int baseHp, strength, weight;
     bool isFlamable, isWetable;
     std::string name;
 };
-class templateObjectList
+//Singleton pattern
+//thread safe
+class TemplateObjectList
 {
 public:
-    templateObjectList();
-    int addTemplate(templateObject);
-    int addTemplate(std::string,int,int,int,bool,bool);
-    templateObject getTemplate(int);
-    int findTemplate(std::string);
-    int getSize();
+	//Must be modifiable, so we need to get the instance by pointer
+	static TemplateObjectList* getInstance();
+    int addTemplate(TemplateObject);
+    const TemplateObject getTemplate(int) const;
+    int findTemplate(std::string) const;
+    int getSize() const;
 private:
-    std::vector<templateObject> list;
-    int size;
+	TemplateObjectList();
+	static std::mutex creationLock;
+	static TemplateObjectList * pInstance;
+    std::vector<TemplateObject> list;
 };
-//object used in world
+//Object used in world
 //modifiable
 //id refers to template location in the template list
-class object
+//not thread safe
+class Object
 {
 public:
-    object();
-    object(int,int,int,int,bool,bool);
-    object(templateObject);
-    object(templateObjectList,int);
-    int getId();
-    int getHp();
-    int getStrength();
-    int getWeight();
-    bool getStateFire();
-    bool getStateWet();
+	Object();
+    Object(int,int,int,int,bool,bool);
+    Object(int);
+    int getId() const;
+    int getHp() const;
+    int getStrength() const;
+    int getWeight() const;
+    bool getStateFire() const;
+    bool getStateWet() const;
+	//Accessor functions that get properties of the template
+	bool getFlamable() const;
+	bool getWetable() const;
    
     void setHp(int);
     void setStrength(int);

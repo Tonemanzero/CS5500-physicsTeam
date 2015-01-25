@@ -1,87 +1,85 @@
-#include "object.h"
+#include "Object.h"
 #include <string>
 #include <vector>
 using namespace std;
 
-//templateObject functions
+//TemplateObject functions
 
-templateObject::templateObject(string nam="void", int i=0, int hp=0, int str=0, int wei=0, bool isFire=0, bool isWet=0)
+TemplateObject::TemplateObject(string nam="void", int hp=0, int str=0, int wei=0, bool isFire=0, bool isWet=0)
 {
     name=nam;
-    id=i;
     baseHp=hp;
     strength=str;
     weight=wei;
     isFlamable=isFire;
     isWetable=isWet;
 }
-string templateObject::getName()
+string TemplateObject::getName() const
 {
     return name;
 }
-int templateObject::getId()
-{
-    return id;
-}
-int templateObject::getHp()
+int TemplateObject::getHp() const
 {
     return baseHp;
 }
-int templateObject::getStrength()
+int TemplateObject::getStrength() const
 {
     return strength;
 }
-int templateObject::getWeight()
+int TemplateObject::getWeight() const
 {
     return weight;
 }
-bool templateObject::getIsFlamable()
+bool TemplateObject::getIsFlamable() const
 {
     return isFlamable;
 }
-bool templateObject::getIsWetable()
+bool TemplateObject::getIsWetable() const
 {
     return isWetable;
 }
 
 
-//templateObjectList functions
+//TemplateObjectList functions
 
-templateObjectList::templateObjectList()
+//We are currently assuming that the default constructor is sufficient, so none is provided
+
+TemplateObjectList* TemplateObjectList::getInstance()
 {
-    list.resize(0);
-    size=0;
+	if(pInstance == nullptr)
+	{
+		//Enter critical section
+		std::lock_guard<std::mutex> lock(creationLock);
+		if(pInstance == nullptr) 
+		{
+			pInstance = new TemplateObjectList();
+		}
+	}
+
+	return pInstance;
 }
-int templateObjectList::getSize()
+
+int TemplateObjectList::getSize() const
 {
-    return size;
+    return list.size;
 }
-int templateObjectList::addTemplate(templateObject temp)
+int TemplateObjectList::addTemplate(TemplateObject temp)
 {
     list.push_back(temp);
-    size += 1;
-    return size-1;
+	return list.size-1;
 }
-int templateObjectList::addTemplate(string name,int hp=0,int strength=0,int weight=0,bool isFlamable=0,bool isWetable=0)
+const TemplateObject TemplateObjectList::getTemplate(int i) const
 {
-    templateObject temp(name,size,hp,strength,weight,isFlamable,isWetable);
-    list.push_back(temp);
-    size += 1;
-    return size-1;
-}
-templateObject templateObjectList::getTemplate(int i)
-{
-    if(i<size)
+    if(i<list.size && i >= 0)
         return list[i];
     else
     {
-        templateObject nell("null",-1);
-        return nell;
+        return nullptr;
     }
 }
-int templateObjectList::findTemplate(string name)
+int TemplateObjectList::findTemplate(string name) const
 {
-    for(int i=0;i<size;i++)
+    for(int i=0;i<list.size;i++)
     {
         if(name==list[i].getName())
             return i;
@@ -89,17 +87,17 @@ int templateObjectList::findTemplate(string name)
     return -1;
 }
 
-//object functions
-object::object()
+//Object functions
+Object::Object()
 {
-    id = 0;
+	id = -1;
     hp = 0;
     strength = 0;
     weight = 0;
-    stateFire = false;
-    stateWet = false;
+    stateFire = 0;
+    stateWet = 0;
 }
-object::object(int i=0,int h=0,int str=0,int wei=0,bool isfire=0,bool iswet=0)
+Object::Object(int i,int h,int str,int wei,bool isfire,bool iswet)
 {
     id = i;
     hp = h;
@@ -108,67 +106,68 @@ object::object(int i=0,int h=0,int str=0,int wei=0,bool isfire=0,bool iswet=0)
     stateFire = isfire;
     stateWet = iswet;
 }
-object::object(templateObject temp)
+Object::Object(int templateId)
 {
-    id = temp.getId();
+	TemplateObject temp = TemplateObjectList::getInstance()->getTemplate(id);
+    id = templateId;
+	//Look up the starting hp from out template
     hp = temp.getHp();
     strength = temp.getStrength();
     weight = temp.getWeight();
     stateFire = 0;
     stateWet = 0;
 }
-object::object(templateObjectList list,int i)
+
+int Object::getId() const
 {
-    templateObject temp = list.getTemplate(i);
-    id = temp.getId();
-    hp = temp.getHp();
-    strength = temp.getStrength();
-    weight = temp.getWeight();
-    stateFire = 0;
-    stateWet = 0;
+	return id;
 }
-    int object::getId()
-    {
-        return id;
-    }
-    int object::getHp()
-    {
-        return hp;
-    }
-    int object::getStrength()
-    {
-        return strength;
-    }
-    int object::getWeight()
-    {
-        return weight;
-    }
-    bool object::getStateFire()
-    {
-        return stateFire;
-    }
-    bool object::getStateWet()
-    {
-        return stateWet;
-    }
-   
-    void object::setHp(int i)
-    {
-        hp = i;
-    }
-    void object::setStrength(int i)
-    {
-        strength = i;
-    }
-    void object::setWeight(int i)
-    {
-        weight = i;
-    }
-    void object::setStateFire(bool i)
-    {
-        stateFire = i;
-    }
-    void object::setStateWet(bool i)
-    {
-        stateWet = i;
-    }
+int Object::getHp() const
+{
+    return hp;
+}
+int Object::getStrength() const
+{
+	return strength;
+}
+int Object::getWeight() const
+{
+	return weight;
+}
+bool Object::getStateFire() const
+{
+	return stateFire;
+}
+bool Object::getStateWet() const
+{
+	return stateWet;
+}
+bool Object::getFlamable() const
+{
+	return TemplateObjectList::getInstance()->getTemplate(id).getIsFlamable();
+}
+bool Object::getWetable() const
+{
+	return TemplateObjectList::getInstance()->getTemplate(id).getIsWetable();
+}
+
+void Object::setHp(int i)
+{
+	hp = i;
+}
+void Object::setStrength(int i)
+{
+	strength = i;
+}
+void Object::setWeight(int i)
+{
+	weight = i;
+}
+void Object::setStateFire(bool i)
+{
+	stateFire = i;
+}
+void Object::setStateWet(bool i)
+{
+	stateWet = i;
+}
