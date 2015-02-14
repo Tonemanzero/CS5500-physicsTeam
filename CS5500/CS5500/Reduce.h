@@ -3,7 +3,9 @@
 
 class Reduce abstract
 {
-  static int Summation(const int* first, const int* last, int identity );
+public:
+  template<typename T>
+  static T Summation(const T* first, const T* last, T identity);
 };
 
 
