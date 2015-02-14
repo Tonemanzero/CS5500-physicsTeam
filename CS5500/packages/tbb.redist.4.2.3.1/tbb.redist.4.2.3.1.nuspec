@@ -1,0 +1,20 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>tbb.redist</id>
+    <version>4.2.3.1</version>
+    <title>tbb Redist</title>
+    <authors>oneZeroPlus</authors>
+    <owners>oneZeroPlus</owners>
+    <licenseUrl>https://www.threadingbuildingblocks.org/licensing</licenseUrl>
+    <projectUrl>https://www.threadingbuildingblocks.org/</projectUrl>
+    <iconUrl>https://www.threadingbuildingblocks.org/sites/all/themes/pbb/images/bird-illustration-tbb.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Redistributable components for package 'tbb'. This package should only be installed as a dependency. 
+(This is not the package you are looking for).</description>
+    <summary>Redistributable components for for package 'tbb'</summary>
+    <releaseNotes>added octave import</releaseNotes>
+    <copyright>Intel and Threading Building Blocks are trademarks of Intel Corporation in the U.S. and other countries.</copyright>
+    <tags>native c++ tbb intel parallel onezeroplus nativepackage</tags>
+  </metadata>
+</package>
