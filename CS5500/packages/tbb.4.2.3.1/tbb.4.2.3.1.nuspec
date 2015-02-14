@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>tbb</id>
+    <version>4.2.3.1</version>
+    <title>tbb</title>
+    <authors>oneZeroPlus</authors>
+    <owners>oneZeroPlus</owners>
+    <licenseUrl>https://www.threadingbuildingblocks.org/licensing</licenseUrl>
+    <projectUrl>https://www.threadingbuildingblocks.org/</projectUrl>
+    <iconUrl>https://www.threadingbuildingblocks.org/sites/all/themes/pbb/images/bird-illustration-tbb.png</iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Widely used C++ template library for task parallelism</description>
+    <summary>Widely used C++ template library for task parallelism</summary>
+    <releaseNotes>Version 4.2 Update 3.</releaseNotes>
+    <copyright>Intel and Threading Building Blocks are trademarks of Intel Corporation in the U.S. and other countries.</copyright>
+    <tags>native c++ tbb intel parallel onezeroplus nativepackage</tags>
+    <dependencies>
+      <dependency id="tbb.redist" version="4.2.3.1" />
+    </dependencies>
+  </metadata>
+</package>
