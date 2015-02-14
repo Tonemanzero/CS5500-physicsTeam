@@ -21,12 +21,18 @@
     <ClInclude Include="world.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Reduce.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="world.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Reduce.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

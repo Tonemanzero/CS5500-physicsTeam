@@ -1,0 +1,4 @@
+The Object class represents a voxel in the world.  Since everyone will be interacting with these in some fashion, 
+here are some guidelines on how to best add functionality to the objects.
+
+The Template is the base object 
