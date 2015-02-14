@@ -1,7 +1,7 @@
 #ifndef Reduce_h
 #define Reduce_h
 
-abstract class Reduce
+class Reduce abstract
 {
   static int Summation(const int* first, const int* last, int identity );
 };

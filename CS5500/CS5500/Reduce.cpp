@@ -5,7 +5,7 @@
 #include "Reduce.h"
 
 //Template sum function
-static int Reduce::Summation(const int* first, const int* last, int identity ) {
+int Reduce::Summation(const int* first, const int* last, int identity ) {
   return tbb::parallel_reduce (
     // Index range for reduction
 	tbb::blocked_range<const int*>(first,last),
