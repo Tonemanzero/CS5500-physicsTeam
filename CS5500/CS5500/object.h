@@ -39,7 +39,6 @@ public:
   int getSize() const;
 
 private:
-  TemplateObjectList();
   static std::mutex creationLock;
   static TemplateObjectList* pInstance;
   std::vector<TemplateObject> list;

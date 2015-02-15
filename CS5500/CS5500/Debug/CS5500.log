@@ -1,15 +1,56 @@
-﻿Build started 1/23/2015 5:44:39 PM.
-     1>Project "c:\Users\Anthony\documents\visual studio 2012\Projects\CS5500\CS5500\CS5500.vcxproj" on node 2 (Build target(s)).
+﻿Build started 2/14/2015 6:06:34 PM.
+     1>Project "C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\CS5500\CS5500.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /ZI /nologo /W3 /WX- /Od /Oy- /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt world.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\CL.exe /c /I"C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\packages\tbb.4.2.3.1\build\native\../..//build/native/include/" /ZI /nologo /W3 /WX- /Od /Oy- /D HAS_TBB /D WIN32 /D _DEBUG /D _CONSOLE /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"Debug\\" /Fd"Debug\vc110.pdb" /Gd /TP /analyze- /errorReport:prompt world.cpp
          world.cpp
+     1>c:\users\austin\documents\github\cs5500-physicsteam\cs5500\cs5500\reduce.h(24): warning C4244: 'return' : conversion from 'int' to 'float', possible loss of data
+     1>c:\users\austin\documents\github\cs5500-physicsteam\cs5500\packages\tbb.4.2.3.1\build\native\include\tbb\parallel_reduce.h(330): warning C4244: '=' : conversion from 'float' to 'int', possible loss of data
+                 c:\users\austin\documents\github\cs5500-physicsteam\cs5500\packages\tbb.4.2.3.1\build\native\include\tbb\parallel_reduce.h(329) : while compiling class template member function 'void tbb::internal::lambda_reduce_body<Range,Value,RealBody,Reduction>::operator ()(Range &)'
+                 with
+                 [
+                     Range=tbb::blocked_range<const int *>,
+                     Value=int,
+                     RealBody=Reduce::Summation::<lambda_0d7cd9850db1ab1b63e494a81ff22c9f>,
+                     Reduction=std::plus<int>
+                 ]
+                 c:\users\austin\documents\github\cs5500-physicsteam\cs5500\packages\tbb.4.2.3.1\build\native\include\tbb\parallel_reduce.h(159) : see reference to function template instantiation 'void tbb::internal::lambda_reduce_body<Range,Value,RealBody,Reduction>::operator ()(Range &)' being compiled
+                 with
+                 [
+                     Range=tbb::blocked_range<const int *>,
+                     Value=int,
+                     RealBody=Reduce::Summation::<lambda_0d7cd9850db1ab1b63e494a81ff22c9f>,
+                     Reduction=std::plus<int>
+                 ]
+                 c:\users\austin\documents\github\cs5500-physicsteam\cs5500\packages\tbb.4.2.3.1\build\native\include\tbb\parallel_reduce.h(422) : see reference to class template instantiation 'tbb::internal::lambda_reduce_body<Range,Value,RealBody,Reduction>' being compiled
+                 with
+                 [
+                     Range=tbb::blocked_range<const int *>,
+                     Value=int,
+                     RealBody=Reduce::Summation::<lambda_0d7cd9850db1ab1b63e494a81ff22c9f>,
+                     Reduction=std::plus<int>
+                 ]
+                 c:\users\austin\documents\github\cs5500-physicsteam\cs5500\cs5500\reduce.h(28) : see reference to function template instantiation 'Value tbb::parallel_reduce<tbb::blocked_range<const T *>,T,Reduce::Summation::<lambda_0d7cd9850db1ab1b63e494a81ff22c9f>,std::plus<_Ty>>(const Range &,const Value &,const RealBody &,const Reduction &)' being compiled
+                 with
+                 [
+                     Value=int,
+                     T=int,
+                     _Ty=int,
+                     Range=tbb::blocked_range<const int *>,
+                     RealBody=Reduce::Summation::<lambda_0d7cd9850db1ab1b63e494a81ff22c9f>,
+                     Reduction=std::plus<int>
+                 ]
+                 c:\users\austin\documents\github\cs5500-physicsteam\cs5500\cs5500\world.cpp(101) : see reference to function template instantiation 'T Reduce::Summation<int>(const T *,const T *,T)' being compiled
+                 with
+                 [
+                     T=int
+                 ]
        Link:
-         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"c:\users\anthony\documents\visual studio 2012\Projects\CS5500\Debug\CS5500.exe" /INCREMENTAL /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"c:\users\anthony\documents\visual studio 2012\Projects\CS5500\Debug\CS5500.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"c:\users\anthony\documents\visual studio 2012\Projects\CS5500\Debug\CS5500.lib" /MACHINE:X86 Debug\object.obj
+         C:\Program Files (x86)\Microsoft Visual Studio 11.0\VC\bin\link.exe /ERRORREPORT:PROMPT /OUT:"C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\Debug\CS5500.exe" /INCREMENTAL /NOLOGO "C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\packages\tbb.4.2.3.1\build\native\../..//build/native/lib/Win32\v110\Debug\tbb_debug.lib" kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\Debug\CS5500.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\Debug\CS5500.lib" /MACHINE:X86 Debug\object.obj
          Debug\world.obj
      1>MSVCRTD.lib(crtexe.obj) : error LNK2019: unresolved external symbol _main referenced in function ___tmainCRTStartup
-     1>c:\users\anthony\documents\visual studio 2012\Projects\CS5500\Debug\CS5500.exe : fatal error LNK1120: 1 unresolved externals
-     1>Done Building Project "c:\Users\Anthony\documents\visual studio 2012\Projects\CS5500\CS5500\CS5500.vcxproj" (Build target(s)) -- FAILED.
+     1>C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\Debug\CS5500.exe : fatal error LNK1120: 1 unresolved externals
+     1>Done Building Project "C:\Users\Austin\Documents\GitHub\CS5500-physicsTeam\CS5500\CS5500\CS5500.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:01.05
+Time Elapsed 00:00:02.99

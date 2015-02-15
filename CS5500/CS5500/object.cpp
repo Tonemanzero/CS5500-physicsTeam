@@ -41,10 +41,11 @@ bool TemplateObject::getIsWetable() const
   return isWetable;
 }
 
-// TemplateObjectList functions
+// TemplateObjectList static variables
+std::mutex TemplateObjectList::creationLock;
+TemplateObjectList* TemplateObjectList::pInstance;
 
-// We are currently assuming that the default constructor is sufficient, so none
-// is provided
+// TemplateObjectList functions
 
 TemplateObjectList* TemplateObjectList::getInstance()
 {

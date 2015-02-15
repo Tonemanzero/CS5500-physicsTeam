@@ -93,17 +93,70 @@ Coordinate World::getSize() const
   return Coordinate(sizeX, sizeY, sizeZ);
 }
 
-int World::countTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId)
+int World::countTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId) const
 {
   int* start = checkForTemplateInRegion(xStart, xEnd, yStart, yEnd, zStart, zEnd, templateId);
   int* end = start + (xEnd - xStart + 1)*(yEnd - yStart + 1)*(zEnd - zStart + 1);
 
-  return Reduce::Summation<int> (start, end, 0);
+  int result = Reduce::Summation<int> (start, end, 0);
+  delete[] start;
+
+  return result;
+}
+
+int* World::elevationTemplateCount(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId) const
+{
+  int zSize = 1 + zEnd - zStart;
+  int* result = new int[zSize];
+
+  tbb::parallel_for( tbb::blocked_range<int>(0, zSize),
+    [&]( const tbb::blocked_range<int>& r) 
+    {
+      for(int i=r.begin(); i!=r.end(); i++)
+      {
+        //Sum up the layer
+        result[i] = countTemplateInRegion(xStart, xEnd, yStart, yEnd, i, i, templateId);
+      }
+    }
+  );
+
+  return result;
+}
+
+int** World::topDownTemplateCount(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId) const
+{
+  int xSize = 1 + xEnd - xStart;
+  int ySize = 1 + yEnd - yStart;
+  int** result = new int*[xSize];
+  tbb::parallel_for( tbb::blocked_range<int>(0, xSize),
+    [&]( const tbb::blocked_range<int>& r) 
+    {
+      for(int i=r.begin(); i!=r.end(); i++)
+      {
+        result[i] = new int[ySize];
+      }
+    }
+  );
+
+  tbb::parallel_for( tbb::blocked_range<int>(0, xSize*ySize),
+    [&]( const tbb::blocked_range<int>& r) 
+    {
+      for(int i=r.begin(); i!=r.end(); i++)
+      {
+        int x = i % xSize;
+        int y = i / xSize;
+        //Sum up the column
+        result[x][y] = countTemplateInRegion(x, x, y, y, zStart, zEnd, templateId);
+      }
+    }
+  );
+
+  return result;
 }
 
 //Coordinate ranges are inclusive
 //Warning: requires start < end     but is currently not bounds checked
-int* World::checkForTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId)
+int* World::checkForTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd, int zStart, int zEnd, int templateId) const
 {
   //TODO: bounds checking, etc.
 
@@ -117,10 +170,10 @@ int* World::checkForTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd,
   int* result = new int[size];
 
   //Populate array
-  tbb::parallel_for( tbb::blocked_range<size_t>(0, sizeof(int)*size),
-    [&]( const tbb::blocked_range<size_t>& r) 
+  tbb::parallel_for( tbb::blocked_range<int>(0, size),
+    [&]( const tbb::blocked_range<int>& r) 
     {
-      for(size_t i=r.begin(); i!=r.end(); i++)
+      for(int i=r.begin(); i!=r.end(); i++)
       {
         if(getObject(xStart + (i % sizeX), yStart + ((i / sizeX) % sizeY), zStart + ((i / (sizeX*sizeY)) % sizeZ)).getId() == templateId) 
         {
@@ -134,5 +187,5 @@ int* World::checkForTemplateInRegion(int xStart, int xEnd, int yStart, int yEnd,
     }
   );
   
-
+  return result;
 }
